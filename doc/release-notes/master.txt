@@ -111,6 +111,9 @@ Vital
    properties. Properties from the derived class are merged with the
    fixed set of properties when the set of properties is requested.
 
+ * Added iterator, const_iterator and iterable classes to support container-
+   independent iteration.
+
 Vital Bindings
 
  * Vital C and Python bindings have been updated with respect the refactoring
