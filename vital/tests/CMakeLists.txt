@@ -18,6 +18,7 @@ kwiver_discover_gtests(vital camera_intrinsics              LIBRARIES ${test_lib
 kwiver_discover_gtests(vital camera_io                      LIBRARIES ${test_libraries} ARGUMENTS "${kwiver_test_data_directory}")
 kwiver_discover_gtests(vital config                         LIBRARIES ${test_libraries})
 kwiver_discover_gtests(vital const_iterator                 LIBRARIES ${test_libraries})
+kwiver_discover_gtests(vital descriptor_set_simple          LIBRARIES ${test_libraries})
 kwiver_discover_gtests(vital detected_object                LIBRARIES ${test_libraries})
 kwiver_discover_gtests(vital detected_object_set            LIBRARIES ${test_libraries})
 kwiver_discover_gtests(vital detected_object_type           LIBRARIES ${test_libraries})

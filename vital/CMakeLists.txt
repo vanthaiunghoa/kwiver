@@ -160,6 +160,7 @@ set( vital_sources
   types/camera.cxx
   types/camera_intrinsics.cxx
   types/descriptor_request.cxx
+  types/descriptor_set.cxx
   types/detected_object.cxx
   types/detected_object_set.cxx
   types/detected_object_type.cxx
