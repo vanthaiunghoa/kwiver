@@ -72,6 +72,7 @@ struct more_second
 
 } // end namespace
 
+
 // ------------------------------------------------------------------
 detected_object_type::
 detected_object_type()
@@ -99,6 +100,8 @@ detected_object_type( const std::vector< std::string >& class_names,
   }
 }
 
+
+// -------------------------------------------------------------------
 detected_object_type::
 detected_object_type( const std::string& class_name, double score )
 {
@@ -143,9 +146,9 @@ score( const std::string& class_name ) const
 
 
 // ------------------------------------------------------------------
-void
+const std::string&
 detected_object_type::
-get_most_likely( std::string& max_name ) const
+get_most_likely_class() const
 {
   if ( m_classes.empty() )
   {
@@ -155,7 +158,24 @@ get_most_likely( std::string& max_name ) const
 
   auto it = std::max_element( m_classes.begin(), m_classes.end(), less_second< const std::string*, double > () );
 
-  max_name = std::string ( *(it->first) );
+  return( *(it->first) );
+}
+
+
+// ------------------------------------------------------------------
+double
+detected_object_type::
+get_most_likely_score() const
+{
+  if ( m_classes.empty() )
+  {
+    // Throw error
+    throw std::runtime_error( "This detection has no scores." );
+  }
+
+  auto it = std::max_element( m_classes.begin(), m_classes.end(), less_second< const std::string*, double > () );
+
+  return it->second;
 }
 
 
@@ -182,6 +202,11 @@ void
 detected_object_type::
 set_score( const std::string& class_name, double score )
 {
+  if ( class_name.empty() )
+  {
+    throw std::invalid_argument( "Class name parameter is empty" );
+  }
+
   // Check to see if class_name is in the master set.
   // If not, add it
   std::lock_guard< std::mutex > lock( detected_object_type::s_table_mutex );

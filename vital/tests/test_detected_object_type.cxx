@@ -69,6 +69,9 @@ TEST(detected_object_type, api)
   EXPECT_EQ( "person", ml_name );
   EXPECT_EQ( 0.65, ml_score );
 
+  EXPECT_EQ( "person", dot.get_most_likely_class() );
+  EXPECT_EQ( 0.65, dot.get_most_likely_score() );
+
   for ( size_t i = 0; i < names.size(); ++i )
   {
     SCOPED_TRACE(
@@ -104,14 +107,26 @@ TEST(detected_object_type, creation_error)
 {
   auto wrong_size_scores = scores;
   wrong_size_scores.resize( 4 );
+  std::vector<std::string> const z_names;
+  std::vector<double> const z_scores;
 
   EXPECT_THROW(
-    detected_object_type dot( {}, {} ),
+    detected_object_type dot( z_names, z_scores ),
+    std::invalid_argument );
+
+  EXPECT_THROW(
+    detected_object_type dot( "", 0.55 ),
     std::invalid_argument );
 
   EXPECT_THROW(
     detected_object_type dot( names, wrong_size_scores ),
     std::invalid_argument );
+
+  detected_object_type dot;
+  EXPECT_THROW(
+    dot.set_score( "", 0.55 ),
+    std::invalid_argument );
+
 }
 
 // ----------------------------------------------------------------------------

@@ -149,12 +149,25 @@ public:
    * If there are no scores associated with this detection, then an
    * exception is thrown
    *
-   * @param[out] max_name Class name with the maximum score.
+   * @returns Class name with the maximum score.
    *
    * @throws std::runtime_error If no scores are associated with this
    *                            detection.
    */
-  void get_most_likely( std::string& max_name ) const;
+  const std::string& get_most_likely_class() const;
+
+  /**
+   * @brief Get score for most likely class.
+   *
+   * This method returns the score for the most likely class, which is
+   * the score with the highest value.
+   *
+   * @return The score for the most likely class.
+   *
+   * @throws std::runtime_error If no scores are associated with this
+   *                            detection.
+   */
+  double get_most_likely_score() const;
 
   /**
    * @brief Get max score and name.
