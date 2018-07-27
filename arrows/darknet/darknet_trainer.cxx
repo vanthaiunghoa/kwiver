@@ -467,7 +467,7 @@ print_detections(
         continue;
       }
 
-      if( category == "vertebrate" )
+      if( category == "vertebrate" || category == "0" )
       {
         has_vert = true;
       }
