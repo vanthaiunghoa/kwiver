@@ -277,29 +277,8 @@ train_from_disk(
 
     std::string full_cmd = python_cmd + import_cmd + header_cmd + header_args + header_end;
 
-    system( full_cmd.c_str() );
+    //system( full_cmd.c_str() );
   }
-
-  // Run training routine
-#ifdef WIN32
-  std::string darknet_cmd = "darknet.exe";
-#else
-  std::string darknet_cmd = "darknet";
-#endif
-  std::string darknet_args = "-i " + boost::lexical_cast< std::string >( d->m_gpu_index ) +
-    " detector train " + d->m_train_directory + "/yolo_v2.data "
-                       + d->m_train_directory + "/yolo_v2.cfg ";
-
-  if( !d->m_seed_weights.empty() )
-  {
-    darknet_args = darknet_args + " " + d->m_seed_weights;
-  }
-
-  std::string full_cmd = darknet_cmd + " " + darknet_args;
-
-  std::cout << "Running " << full_cmd << std::endl;
-
-  system( full_cmd.c_str() );
 }
 
 // -----------------------------------------------------------------------------
@@ -455,6 +434,8 @@ print_detections(
   const double width = region.width();
   const double height = region.height();
 
+  bool has_vert = false;
+
   auto ie = all_detections->cend();
   for ( auto detection = all_detections->cbegin(); detection != ie; ++detection )
   {
@@ -486,6 +467,11 @@ print_detections(
         continue;
       }
 
+      if( category == "vertebrate" )
+      {
+        has_vert = true;
+      }
+
       double min_x = overlap.min_x() - region.min_x();
       double min_y = overlap.min_y() - region.min_y();
 
@@ -504,7 +490,7 @@ print_detections(
     }
   }
 
-  if( !m_chips_w_gt_only || !to_write.empty() )
+  if( ( !m_chips_w_gt_only || !to_write.empty() ) && has_vert )
   {
     std::ofstream fout( filename.c_str() );
 
@@ -531,7 +517,7 @@ generate_fn( std::string image_folder, std::string gt_folder,
 
   std::ostringstream ss;
   ss << std::setw( 9 ) << std::setfill( '0' ) << sample_counter;
-  std::string s = ss.str();
+  std::string s = "hc-" + ss.str();
 
   image = image_folder + "/" + s + ".png";
   gt = gt_folder + "/" + s + ".txt";
